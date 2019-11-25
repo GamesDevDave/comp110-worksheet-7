@@ -49,8 +49,17 @@ namespace comp110_worksheet_7
 		// Return the nesting depth of the given directory. A directory containing only files (no subdirectories) has a depth of 0.
 		public static int GetDepth(string directory)
 		{
-			throw new NotImplementedException();
-		}
+            string[] depth;
+            int depthValue = 0;
+
+            depth = Directory.GetDirectories(directory);
+            foreach(string dir in depth)
+            {
+                depthValue++;
+            }
+
+            return depthValue;
+        }
 
 		// Get the path and size (in bytes) of the smallest file below the given directory
 		public static Tuple<string, long> GetSmallestFile(string directory)
