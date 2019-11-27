@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -61,22 +62,62 @@ namespace comp110_worksheet_7
             return depthValue;
         }
 
-		// Get the path and size (in bytes) of the smallest file below the given directory
-		public static Tuple<string, long> GetSmallestFile(string directory)
-		{
-			throw new NotImplementedException();
-		}
+        // Get the path and size (in bytes) of the smallest file below the given directory
+        public static Tuple<string, long> GetSmallestFile(string directory)
+        {
+            string[] filesList;
+            Tuple<string, long> size;
+
+            size = new Tuple<string, long>("hi", 1);
+            filesList = Directory.GetFiles(directory, ".", SearchOption.AllDirectories);
+
+            string smallestFile = (from item in filesList let len = GetFileSize(item) where len > 0 orderby len ascending select item).First();
+            long minSize = GetFileSize(smallestFile);
+
+            string minSizeName = Path.GetFileName(smallestFile);
+
+            size = new Tuple<string, long>(minSizeName, minSize);
+            return size;
+        }
 
 		// Get the path and size (in bytes) of the largest file below the given directory
 		public static Tuple<string, long> GetLargestFile(string directory)
 		{
-			throw new NotImplementedException();
-		}
+            string[] filesList;
+            Tuple<string, long> size;
+
+            size = new Tuple<string, long>("hi", 1);
+            filesList = Directory.GetFiles(directory, ".", SearchOption.AllDirectories);
+
+            string largestFile = (from item in filesList let len = GetFileSize(item) where len > 0 orderby len descending select item).First();
+            long maxSize = GetFileSize(largestFile);
+
+            string maxSizeName = Path.GetFileName(largestFile);
+
+            size = new Tuple<string, long>(maxSizeName, maxSize);
+            return size;
+        }
 
 		// Get all files whose size is equal to the given value (in bytes) below the given directory
 		public static IEnumerable<string> GetFilesOfSize(string directory, long size)
 		{
-			throw new NotImplementedException();
-		}
+            string[] files;
+            List<string> filesOfSize = new List<string>();
+            files = Directory.GetFiles(directory, "*.*", SearchOption.AllDirectories);
+            long fileSize;
+            foreach (string file in files)
+            {
+                fileSize = GetFileSize(file);
+                if (fileSize == size)
+                {
+                    filesOfSize.Add(Path.GetFileName(file));
+                }
+                else
+                {
+
+                }
+            }
+            return filesOfSize;
+        }
 	}
 }
